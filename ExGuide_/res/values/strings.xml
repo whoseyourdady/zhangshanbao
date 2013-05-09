@@ -1,0 +1,20 @@
+<resources>
+
+    <string name="app_name">展上宝</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="locate">当前位置为：广州</string>
+    <string name="bundlingPcs">绑定百度云</string>
+    <string name="bundlingWeibo">绑定微博</string>
+    <string name="setting">设置</string>
+    <string name="exit">退出</string>
+    <string name="time">时间</string>
+	<string name="address">地址</string>
+	<string name="exhdate">举办时间</string>
+	<string name="loading">我们正努力加载</string>
+	<string name="exhtimetest">2013-5-12至2013-5-15</string>
+	<string name="exhlocation">展馆名称</string>
+	<string name="exhtime">开放时间</string>
+	<string name="exhintroductuin">简介:</string>
+	<string name="pull_to_refresh_tap_label">Tap to refresh...</string>
+</resources>

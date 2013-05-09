@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 下面是热门产品的id -->
+    <item type="id" name="hotproloading">false</item>
+    <item type="id" name="hotprolistview">false</item>
+    
+    <!-- 下面是首面的id -->
+    <item type="id" name="homeloading">false</item>
+    <item type="id" name="exhdate">false</item>
+</resources>
