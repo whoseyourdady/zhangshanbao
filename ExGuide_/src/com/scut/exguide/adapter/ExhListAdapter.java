@@ -20,11 +20,16 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import com.example.exguide.R;
 import com.scut.exguide.entity.Exhibition;
-import com.scut.exguide.utility.Constant;
+import com.scut.exguide.entity.Task;
+import com.scut.exguide.mulithread.LoadImageThread;
+import com.scut.exguide.mulithread.LoaderImageTask;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import com.scut.exguide.ui.HomeActivity;
+import com.scut.exguide.utility.Constant;
+import com.scut.exguide.utility.MyActivity;
+
+import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,10 +41,12 @@ public class ExhListAdapter extends BaseAdapter  {
 
 	private LayoutInflater mInflater;// Item的容量
 	private ArrayList<Exhibition> mData;// 数据源
-
-	public ExhListAdapter(Context context, ArrayList<Exhibition> _Data) {
-		mInflater = LayoutInflater.from(context);
+	public Activity mActivity;
+	
+	public ExhListAdapter(Activity _Activity, ArrayList<Exhibition> _Data) {
+		mInflater = LayoutInflater.from(_Activity);
 		mData = _Data;
+		mActivity = _Activity;
 	}
 
 	@Override
@@ -87,11 +94,21 @@ public class ExhListAdapter extends BaseAdapter  {
 		} else {
 
 			holder = (ExViewHolder) convertView.getTag();
+			
 		}
 
-		LoadImageThread t = new LoadImageThread(holder.exhimage,
-				mData.get(position).logo_url);
-		t.run();
+		Task task = new Task();
+		String path = Constant.urlPrefix_getLogo+mData.get(position).logo_url;
+		task.path = path;
+		task.myActivity = (MyActivity) mActivity;
+		task.mImageView = holder.exhimage;
+		
+		HomeActivity.LoaderImage.addTask(task);
+		
+		
+//		LoadImageThread t = new LoadImageThread(holder.exhimage,
+//				mData.get(position).logo_url);
+//		t.run();
 
 		if (mData.get(position).onshow) {
 			holder.exhdate.setText("闭幕日期");
@@ -112,96 +129,101 @@ public class ExhListAdapter extends BaseAdapter  {
 		return convertView;
 	}
 
-	/**
-	 * 下载网上图片
-	 * 
-	 * @param url
-	 * @return
-	 * @throws IOException 
-	 * @throws IllegalStateException 
-	 */
-	public Bitmap getImage(String romtepath) throws IllegalStateException, IOException {
-		URL url = new URL(romtepath);// 获取到路径
-		Bitmap bitmap = null;
-		// // http协议连接对象
-		// HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		// conn.setRequestMethod("GET");// 这里是不能乱写的，详看API方法
-		// conn.setConnectTimeout(6 * 1000);
-		//
-		// Bitmap bitmap = null;
-		// if (conn.getResponseCode() == 200) {
-		// InputStream inputStream = conn.getInputStream();
-		// byte[] data = readStream(inputStream);
-		// File file = new File("smart.jpg");// 给图片起名子
-		// bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-		// FileOutputStream outStream = new FileOutputStream(file);// 写出对象
-		// outStream.write(data);// 写入
-		// outStream.close(); // 关闭流
-		// }
-		// return bitmap;
-
-		HttpGet httpRequest = new HttpGet(romtepath);
-		// 取得HttpClient 对象
-		HttpClient httpclient = new DefaultHttpClient();
-
-		// 请求httpClient ，取得HttpRestponse
-		HttpResponse httpResponse = httpclient.execute(httpRequest);
-		if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-			// 取得相关信息 取得HttpEntiy
-			HttpEntity httpEntity = httpResponse.getEntity();
-			// 获得一个输入流
-			InputStream is = httpEntity.getContent();
-
-			bitmap = BitmapFactory.decodeStream(is);
-
-		}
-		return bitmap;
-
-	}
-
-	private byte[] readStream(InputStream inStream) throws IOException {
-		// TODO Auto-generated method stub
-		ByteArrayOutputStream outstream = new ByteArrayOutputStream();
-		byte[] buffer = new byte[1024]; // 用数据装
-		int len = -1;
-		while ((len = inStream.read(buffer)) != -1) {
-			outstream.write(buffer, 0, len);
-		}
-		outstream.close();
-		inStream.close();
-		// 关闭流一定要记得。
-		return outstream.toByteArray();
-
-	}
-
-	/**
-	 * 获取图片内部类
-	 */
-	class LoadImageThread extends Thread {
-
-		private String url;
-		private ImageView mView;
-
-		public LoadImageThread(ImageView view, String path) {
-			mView = view;
-			url = Constant.urlPrefix_getLogo + path.substring(1);
-
-		}
-
-		@Override
-		public void run() {
-			// TODO Auto-generated method stub
-			super.run();
-			try {
-				Bitmap bitmap = getImage(url);
-				mView.setImageBitmap(bitmap);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		}
-
+//	/**
+//	 * 下载网上图片
+//	 * 
+//	 * @param url
+//	 * @return
+//	 * @throws IOException 
+//	 * @throws IllegalStateException 
+//	 */
+//	public Bitmap getImage(String romtepath) throws IllegalStateException, IOException {
+//		URL url = new URL(romtepath);// 获取到路径
+//		Bitmap bitmap = null;
+//		// // http协议连接对象
+//		// HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//		// conn.setRequestMethod("GET");// 这里是不能乱写的，详看API方法
+//		// conn.setConnectTimeout(6 * 1000);
+//		//
+//		// Bitmap bitmap = null;
+//		// if (conn.getResponseCode() == 200) {
+//		// InputStream inputStream = conn.getInputStream();
+//		// byte[] data = readStream(inputStream);
+//		// File file = new File("smart.jpg");// 给图片起名子
+//		// bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+//		// FileOutputStream outStream = new FileOutputStream(file);// 写出对象
+//		// outStream.write(data);// 写入
+//		// outStream.close(); // 关闭流
+//		// }
+//		// return bitmap;
+//
+//		HttpGet httpRequest = new HttpGet(romtepath);
+//		// 取得HttpClient 对象
+//		HttpClient httpclient = new DefaultHttpClient();
+//
+//		// 请求httpClient ，取得HttpRestponse
+//		HttpResponse httpResponse = httpclient.execute(httpRequest);
+//		if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+//			// 取得相关信息 取得HttpEntiy
+//			HttpEntity httpEntity = httpResponse.getEntity();
+//			// 获得一个输入流
+//			InputStream is = httpEntity.getContent();
+//
+//			bitmap = BitmapFactory.decodeStream(is);
+//
+//		}
+//		return bitmap;
+//
+//	}
+//
+//	private byte[] readStream(InputStream inStream) throws IOException {
+//		// TODO Auto-generated method stub
+//		ByteArrayOutputStream outstream = new ByteArrayOutputStream();
+//		byte[] buffer = new byte[1024]; // 用数据装
+//		int len = -1;
+//		while ((len = inStream.read(buffer)) != -1) {
+//			outstream.write(buffer, 0, len);
+//		}
+//		outstream.close();
+//		inStream.close();
+//		// 关闭流一定要记得。
+//		return outstream.toByteArray();
+//
+//	}
+//
+//	/**
+//	 * 获取图片内部类
+//	 */
+//	class LoadImageThread extends Thread {
+//
+//		private String url;
+//		private ImageView mView;
+//
+//		public LoadImageThread(ImageView view, String path) {
+//			mView = view;
+//			url = Constant.urlPrefix_getLogo + path.substring(1);
+//
+//		}
+//
+//		@Override
+//		public void run() {
+//			// TODO Auto-generated method stub
+//			super.run();
+//			try {
+//				Bitmap bitmap = getImage(url);
+//				mView.setImageBitmap(bitmap);
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//
+//		}
+//
+//	}
+	
+	public int getId(int position) {
+		Exhibition ex = mData.get(position);
+		return ex.mID;
 	}
 
 }

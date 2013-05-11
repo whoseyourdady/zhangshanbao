@@ -7,4 +7,13 @@
     <!-- 下面是首面的id -->
     <item type="id" name="homeloading">false</item>
     <item type="id" name="exhdate">false</item>
+    
+    <!-- 展会详情页的id -->
+    <item type="id" name="_dp_exhlogo">false</item>
+    <item type="id" name="_dp_exhname">false</item>
+    <item type="id" name="_dp_hallname">false</item>
+    <item type="id" name="_dp_exhsechedule">false</item>
+    <item type="id" name="_dp_exhdate">false</item>
+    <item type="id" name="_dp_description">false</item>
+    
 </resources>

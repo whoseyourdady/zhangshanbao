@@ -47,5 +47,7 @@ public class ExPagerAdapter extends PagerAdapter {
 		// TODO Auto-generated method stub
 		return mTitle.get(position);
 	}
+	
+	
 
 }

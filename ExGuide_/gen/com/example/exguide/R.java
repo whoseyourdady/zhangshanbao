@@ -28,28 +28,37 @@ public final class R {
         public static final int icon=0x7f020004;
         public static final int love=0x7f020005;
         public static final int news_item_bg=0x7f020006;
-        public static final int q1=0x7f020007;
-        public static final int q3=0x7f020008;
-        public static final int s_516c43f5703df=0x7f020009;
-        public static final int xlistview_arrow=0x7f02000a;
+        public static final int nonlogo=0x7f020007;
+        public static final int q1=0x7f020008;
+        public static final int q3=0x7f020009;
+        public static final int s_516c43f5703df=0x7f02000a;
+        public static final int xlistview_arrow=0x7f02000b;
     }
     public static final class id {
-        public static final int action_settings=0x7f050016;
-        public static final int exhaddress=0x7f050010;
+        public static final int _dp_description=0x7f050009;
+        public static final int _dp_exhdate=0x7f050008;
+        /**  展会详情页的id 
+         */
+        public static final int _dp_exhlogo=0x7f050004;
+        public static final int _dp_exhname=0x7f050005;
+        public static final int _dp_exhsechedule=0x7f050007;
+        public static final int _dp_hallname=0x7f050006;
+        public static final int action_settings=0x7f05001c;
+        public static final int button1=0x7f050017;
+        public static final int button4=0x7f050016;
+        public static final int exhaddress=0x7f050014;
         public static final int exhdate=0x7f050003;
-        public static final int exhilist=0x7f050007;
-        public static final int exhimage=0x7f05000c;
-        public static final int exhlogo=0x7f05000a;
-        public static final int exhname=0x7f05000e;
-        public static final int exhname2=0x7f05000b;
-        public static final int exhome=0x7f050004;
-        public static final int exhome_pagertab=0x7f050006;
-        public static final int exhome_viewpager=0x7f050005;
-        public static final int exhschedule=0x7f05000f;
-        public static final int exhstate=0x7f05000d;
-        public static final int exit=0x7f050019;
-        public static final int exscrollView=0x7f050009;
-        public static final int fullscreen_loading=0x7f050011;
+        public static final int exhilist=0x7f05000d;
+        public static final int exhimage=0x7f050010;
+        public static final int exhname=0x7f050012;
+        public static final int exhome=0x7f05000a;
+        public static final int exhome_pagertab=0x7f05000c;
+        public static final int exhome_viewpager=0x7f05000b;
+        public static final int exhschedule=0x7f050013;
+        public static final int exhstate=0x7f050011;
+        public static final int exit=0x7f05001f;
+        public static final int exscrollView=0x7f05000f;
+        public static final int fullscreen_loading=0x7f050015;
         /**  下面是首面的id 
          */
         public static final int homeloading=0x7f050002;
@@ -57,13 +66,13 @@ public final class R {
         /**  下面是热门产品的id 
          */
         public static final int hotproloading=0x7f050000;
-        public static final int loading=0x7f050008;
-        public static final int locate=0x7f050017;
-        public static final int setting=0x7f050018;
-        public static final int waterfall_container=0x7f050013;
-        public static final int waterfall_image=0x7f050015;
-        public static final int waterfall_scroll=0x7f050012;
-        public static final int waterloading=0x7f050014;
+        public static final int loading=0x7f05000e;
+        public static final int locate=0x7f05001d;
+        public static final int setting=0x7f05001e;
+        public static final int waterfall_container=0x7f050019;
+        public static final int waterfall_image=0x7f05001b;
+        public static final int waterfall_scroll=0x7f050018;
+        public static final int waterloading=0x7f05001a;
     }
     public static final class layout {
         public static final int activity_exhome=0x7f030000;
@@ -73,9 +82,10 @@ public final class R {
         public static final int linearlayout_elistitem=0x7f030004;
         public static final int loading=0x7f030005;
         public static final int locatingloading=0x7f030006;
-        public static final int waterfall=0x7f030007;
-        public static final int waterfallitem=0x7f030008;
-        public static final int waterloading=0x7f030009;
+        public static final int offlin=0x7f030007;
+        public static final int waterfall=0x7f030008;
+        public static final int waterfallitem=0x7f030009;
+        public static final int waterloading=0x7f03000a;
     }
     public static final class menu {
         public static final int home=0x7f080000;

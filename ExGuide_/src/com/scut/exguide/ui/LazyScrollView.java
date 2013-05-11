@@ -1,4 +1,4 @@
-package com.scut.exguide.utility;
+package com.scut.exguide.ui;
 
 //来自：http://blog.csdn.net/listening_music/article/details/7192629
 import android.content.Context;

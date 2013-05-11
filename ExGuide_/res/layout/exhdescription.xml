@@ -10,7 +10,7 @@
         android:layout_height="fill_parent"
         layout="@layout/loading" >
     </include>
-    
+
     <ScrollView
         android:id="@+id/exscrollView"
         android:layout_width="match_parent"
@@ -28,14 +28,14 @@
                 android:orientation="horizontal" >
 
                 <ImageView
-                    android:id="@+id/exhlogo"
+                    android:id="@id/_dp_exhlogo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dip"
                     android:src="@drawable/s_516c43f5703df" />
 
                 <TextView
-                    android:id="@+id/exhname2"
+                    android:id="@id/_dp_exhname"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -59,11 +59,11 @@
                     android:text="@string/exhlocation" />
 
                 <TextView
+                    android:id="@id/_dp_hallname"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:singleLine="true"
-                    android:text="广州市琶洲会展中心" />
+                    android:singleLine="true" />
             </LinearLayout>
 
             <LinearLayout
@@ -81,11 +81,11 @@
                     android:text="@string/exhdate" />
 
                 <TextView
+                    android:id="@id/_dp_exhsechedule"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:singleLine="true"
-                    android:text="@string/exhtimetest" />
+                    android:singleLine="true" />
             </LinearLayout>
 
             <LinearLayout
@@ -107,7 +107,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:singleLine="true"
-                    android:text="早上9点至下午6点" />
+                    android:id="@id/_dp_exhdate"/>
             </LinearLayout>
 
             <TextView
@@ -125,9 +125,7 @@
                 android:layout_marginLeft="5dip"
                 android:layout_marginTop="6dip"
                 android:gravity="left"
-                android:text="adfafdasfasfdadfasdfdsadfadsfasdafds" />
-
-           
+                android:id="@id/_dp_description" />
         </LinearLayout>
     </ScrollView>
 

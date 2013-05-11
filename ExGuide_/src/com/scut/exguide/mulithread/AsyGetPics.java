@@ -1,5 +1,5 @@
 /*
- *获得展会列表的线程
+ *获取瀑布流线程
  */
 package com.scut.exguide.mulithread;
 
@@ -21,7 +21,6 @@ import org.json.JSONObject;
 import com.scut.exguide.adapter.ExhListAdapter;
 import com.scut.exguide.entity.Exhibition;
 import com.scut.exguide.ui.ExhActivity;
-import com.scut.exguide.ui.HomeActivity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -32,21 +31,17 @@ import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
 //第一个是参数，第二个是进度，第三个是结果
-public class AsyGetExhDescription extends
-		AsyncTask<String, Integer, Exhibition> {
+public class AsyGetPics extends AsyncTask<String, Integer, ArrayList<String>> {
 
 	private Activity mActivity;
 
-	public AsyGetExhDescription(Activity _a) {
+	public AsyGetPics(Activity _a) {
 		mActivity = _a;
 	}
 
 	@Override
 	protected void onPreExecute() {
 		// TODO Auto-generated method stub
-		
-		  
-		
 		super.onPreExecute();
 
 	}
@@ -55,12 +50,13 @@ public class AsyGetExhDescription extends
 	 * 在exhactivity中将参数写入excute函数中
 	 */
 	@Override
-	protected Exhibition doInBackground(String... params) {
+	protected ArrayList<String> doInBackground(String... params) {
 		// TODO Auto-generated method stub
 
-		Exhibition data = null;
+		ArrayList<String> data = null;
 		try {
-			data = getDescripition(params[0]);
+
+			data = getPics(params[0]);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -70,10 +66,10 @@ public class AsyGetExhDescription extends
 	}
 
 	@Override
-	protected void onPostExecute(Exhibition result) {
+	protected void onPostExecute(ArrayList<String> result) {
 		// TODO Auto-generated method stub
 
-		((ExhActivity) mActivity).SetDescription(result);
+		((ExhActivity) mActivity).SetWaterfallUI(result);
 
 		super.onPostExecute(result);
 	}
@@ -85,14 +81,14 @@ public class AsyGetExhDescription extends
 	}
 
 	/**
-	 * 下载回展会列表
+	 * 下载回瀑布流的地址
 	 * 
 	 * @param romtepath
 	 * @return
 	 * @throws Exception
 	 */
-	public Exhibition getDescripition(String remotepath) throws Exception {
-		Exhibition data = new Exhibition();
+	public ArrayList<String> getPics(String remotepath) throws Exception {
+		ArrayList<String> data = new ArrayList<String>();
 
 		HttpGet request = new HttpGet(remotepath);
 
@@ -115,39 +111,13 @@ public class AsyGetExhDescription extends
 				}
 				// 外层数据
 				JSONObject outerdata = new JSONObject(sbuilder.toString());
-				JSONObject innerdata = outerdata.getJSONObject("data");
-				// for (int i = 0; i < innerdata.length(); i++) {
-				Exhibition exh = new Exhibition();
-				// 实际数据
-				// JSONObject entity = innerdata.getJSONObject(i);
-				JSONObject entity = innerdata;
-				data.mID = entity.getInt("id");
-				data.name_cn = entity.getString("name_cn");
-				data.name_en = entity.getString("name_en");
-				data.logo_url = entity.getString("logo_url");
+				JSONArray innerdata = outerdata.getJSONArray("data");
+				for (int i = 0; i < innerdata.length(); i++) {
 
-				if (0 == entity.getInt("is_on_show")) {
-					exh.onshow = false;
-				} else {
-					exh.onshow = true;
+					JSONObject entity = innerdata.getJSONObject(i);
+					data.add(entity.getString("file_path"));
+
 				}
-				data.address = entity.getString("address");
-				data.hall = entity.getString("hall");
-				data.period_start = String.copyValueOf(
-						entity.getString("period_start").toCharArray(), 0, 10);
-				data.period_end = String.copyValueOf(
-						entity.getString("period_end").toCharArray(), 0, 10);
-				data.day_start = entity.getString("day_start");
-				data.day_end = entity.getString("day_end");
-				data.description = entity.getString("description");
-				data.mobilephone = entity.getString("mobilephone");
-				data.organizer = entity.getString("organizer");
-				data.fax = entity.getString("fax");
-				data.province = entity.getString("province_name");
-				data.city = entity.getString("city_name");				
-				data.district = entity.getString("district_name");
-
-				// }
 
 			}
 

@@ -35,6 +35,9 @@ public class Exhibition {
 	public String telephone;//固定电话  
 	public String fax;//传真  
 	public String mobilephone;//手机号码 
+	public String province;
+	public String city;
+	public String district;
 
 	
 	public Exhibition(){

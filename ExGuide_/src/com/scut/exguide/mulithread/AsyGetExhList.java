@@ -39,17 +39,24 @@ public class AsyGetExhList extends
 	private View loading;
 	private ListView mList;
 	private Activity mActivity;
-	
+
 	public AsyGetExhList(View _l, ListView _li, Activity _a) {
 		loading = _l;
 		mList = _li;
 		mActivity = _a;
-		
+
 	}
-	
+
+	public AsyGetExhList(Activity _a) {
+
+		mActivity = _a;
+
+	}
+
 	@Override
 	protected void onPreExecute() {
 		// TODO Auto-generated method stub
+
 		super.onPreExecute();
 
 	}
@@ -68,34 +75,38 @@ public class AsyGetExhList extends
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return data;
 	}
 
 	@Override
 	protected void onPostExecute(ArrayList<Exhibition> result) {
 		// TODO Auto-generated method stub
-		mList.setAdapter(new ExhListAdapter(mActivity, result));
-		
-		OnItemClickListener listener = new OnItemClickListener() {
+		// mList.setAdapter(new ExhListAdapter(mActivity, result));
+		//
+		// OnItemClickListener listener = new OnItemClickListener() {
+		//
+		//
+		// @Override
+		// public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+		// long arg3) {
+		// // TODO Auto-generated method stub
+		// Intent intent = new Intent();
+		// intent.setClass(mActivity, ExhActivity.class);
+		// intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+		// Bundle bundle = new Bundle();
+		// int id = ((HomeActivity) mActivity).GetExhibitonID(arg2);
+		// bundle.putInt("id", id);
+		// intent.putExtras(bundle);
+		// mActivity.startActivity(intent);
+		//
+		// }
+		// };
+		// mList.setOnItemClickListener(listener);
+		// loading.setVisibility(View.GONE);
+		// mList.setVisibility(View.VISIBLE);
 
-		
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent();
-				intent.setClass(mActivity, ExhActivity.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-				Bundle bundle = new Bundle();
-				bundle.putInt("id", arg2);
-				mActivity.startActivity(intent);
-				
-			}
-		};
-		mList.setOnItemClickListener(listener);		
-		loading.setVisibility(View.GONE);
-		mList.setVisibility(View.VISIBLE);
+		((HomeActivity) mActivity).SetListUI(result);
 		super.onPostExecute(result);
 	}
 
@@ -144,9 +155,12 @@ public class AsyGetExhList extends
 					exh.mID = entity.getInt("id");
 					exh.name_cn = entity.getString("name_cn");
 					exh.name_en = entity.getString("name_en");
-					exh.logo_url = entity.getString("logo_url");
-					
-					if (0 == entity.getInt("is_on_show"))  {
+					String url = String.copyValueOf(entity.getString("logo_url")
+							.toCharArray(), 1, entity.getString("logo_url")
+							.length() - 1);
+					exh.logo_url = url;
+
+					if (0 == entity.getInt("is_on_show")) {
 						exh.onshow = false;
 					} else {
 						exh.onshow = true;

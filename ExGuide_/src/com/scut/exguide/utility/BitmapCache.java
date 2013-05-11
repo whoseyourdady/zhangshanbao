@@ -16,13 +16,13 @@ import android.graphics.BitmapFactory;
  */
 public class BitmapCache {
 	static private BitmapCache cache;
-	/** 用于Cache内容的存�?*/
+	/** 用于Cache内容的存�?*/
 	private Hashtable<String, BtimapRef> bitmapRefs;
-	/** 垃圾Reference的队列（�?��用的对象已经被回收，则将该引用存入队列中�?*/
+	/** 垃圾Reference的队列（�?��用的对象已经被回收，则将该引用存入队列中�?*/
 	private ReferenceQueue<Bitmap> q;
 
 	/**
-	 * 继承SoftReference，使得每�?��实例都具有可识别的标识�?
+	 * 继承SoftReference，使得每�?��实例都具有可识别的标识�?
 	 */
 	private class BtimapRef extends SoftReference<Bitmap> {
 		private String _key = "";
@@ -40,7 +40,7 @@ public class BitmapCache {
 	}
 
 	/**
-	 * 取得缓存器实�?
+	 * 取得缓存器实�?
 	 */
 	public static BitmapCache getInstance() {
 		if (cache == null) {
@@ -51,7 +51,7 @@ public class BitmapCache {
 	}
 
 	/**
-	 * 以软引用的方式对�?��Bitmap对象的实例进行引用并保存该引�?
+	 * 以软引用的方式对�?��Bitmap对象的实例进行引用并保存该引�?
 	 */
 	private void addCacheBitmap(Bitmap bmp, String key) {
 		cleanCache();// 清除垃圾引用
@@ -60,17 +60,17 @@ public class BitmapCache {
 	}
 
 	/**
-	 * 依据�?��定的文件名获取图�?
+	 * 依据�?��定的文件名获取图�?
 	 */
 	public Bitmap getBitmap(String filename, AssetManager assetManager) {
 
 		Bitmap bitmapImage = null;
-		// 缓存中是否有该Bitmap实例的软引用，如果有，从软引用中取得�?
+		// 缓存中是否有该Bitmap实例的软引用，如果有，从软引用中取得�?
 		if (bitmapRefs.containsKey(filename)) {
 			BtimapRef ref = (BtimapRef) bitmapRefs.get(filename);
 			bitmapImage = (Bitmap) ref.get();
 		}
-		// 如果没有软引用，或�?从软引用中得到的实例是null，重新构建一个实例，
+		// 如果没有软引用，或�?从软引用中得到的实例是null，重新构建一个实例，
 		// 并保存对这个新建实例的软引用
 		if (bitmapImage == null) {
 			BitmapFactory.Options options = new BitmapFactory.Options();
