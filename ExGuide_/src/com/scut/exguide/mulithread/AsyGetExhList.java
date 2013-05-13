@@ -152,6 +152,7 @@ public class AsyGetExhList extends
 					Exhibition exh = new Exhibition();
 					// 实际数据
 					JSONObject entity = innerdata.getJSONObject(i);
+					entity.get
 					exh.mID = entity.getInt("id");
 					exh.name_cn = entity.getString("name_cn");
 					exh.name_en = entity.getString("name_en");

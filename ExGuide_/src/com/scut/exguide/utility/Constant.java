@@ -6,7 +6,7 @@ public class Constant {
 	 * �ٶ�PCSģ�鳣��
 	 */
 	//�ٶ�PCS API KEY
-	public final static String mbApiKey = "L6g70tBRRIXLsY0Z3HwKqlRE";
+	public final static String mbApiKey = "GqRQpN9bayVt6yIAzrqsUbnU";
 	///�ٶ�PCS API SECRET
 	
 	//PCS�洢·tca

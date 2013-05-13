@@ -17,22 +17,15 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import com.example.exguide.R;
-import com.scut.exguide.entity.Task;
-import com.scut.exguide.ui.HomeActivity;
-import com.scut.exguide.utility.BitmapCache;
-import com.scut.exguide.utility.Constant;
-import com.scut.exguide.utility.TaskParam;
 
-import android.content.res.AssetManager;
+import com.scut.exguide.entity.Task;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.os.Message;
+
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.ImageView;
+
 
 /**
  * 异步任务获取assets目录下images下的图片资源

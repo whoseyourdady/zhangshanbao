@@ -148,7 +148,7 @@ public class OffLineUpload extends Activity {
 //	    		e.printStackTrace();
 //	    	}
 			BaiduOAuth oauthClient = new BaiduOAuth();
-			oauthClient.startOAuth(this, mbApiKey, new String[]{"basic", "netdisk"}, new BaiduOAuth.OAuthListener() {
+			oauthClient.startOAuth(this, Constant.mbApiKey, new String[]{"basic"}, new BaiduOAuth.OAuthListener() {
 				@Override
 				public void onException(String msg) {
 					Toast.makeText(getApplicationContext(), "Login failed " + msg, Toast.LENGTH_SHORT).show();

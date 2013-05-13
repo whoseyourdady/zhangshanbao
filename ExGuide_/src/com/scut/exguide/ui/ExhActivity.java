@@ -26,7 +26,7 @@ import com.scut.exguide.mulithread.LoadImageThread;
 import com.scut.exguide.ui.LazyScrollView.OnScrollListener;
 import com.scut.exguide.utility.Constant;
 import com.scut.exguide.utility.MyActivity;
-import com.scut.exguide.utility.TaskParam;
+
 
 import android.app.ActionBar;
 import android.app.Activity;

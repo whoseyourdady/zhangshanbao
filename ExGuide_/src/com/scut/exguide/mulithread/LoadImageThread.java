@@ -24,7 +24,7 @@ import android.widget.LinearLayout;
 import com.example.exguide.R;
 import com.scut.exguide.utility.BitmapCache;
 import com.scut.exguide.utility.Constant;
-import com.scut.exguide.utility.TaskParam;
+
 
 public class LoadImageThread extends Thread {
 	private String url;
