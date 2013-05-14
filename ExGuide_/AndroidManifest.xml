@@ -21,15 +21,15 @@
         <activity
             android:name="com.scut.exguide.ui.HomeActivity"
             android:label="@string/app_name" >
-        </activity>
-        <activity
-            android:name="com.scut.exguide.ui.OffLineUpload"
-            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.scut.exguide.ui.OffLineUpload"
+            android:label="@string/app_name" >
         </activity>
 
         <service
@@ -70,6 +70,5 @@
     </uses-permission>
     <uses-permission android:name="android.permission.WRITE_SETTINGS" >
     </uses-permission>
-
 
 </manifest>
