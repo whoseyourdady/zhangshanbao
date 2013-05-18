@@ -5,7 +5,7 @@
     android:orientation="vertical" >
 
     <include
-        android:id="@+id/loading"
+        android:id="@id/_dp_loading"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         layout="@layout/loading" >
@@ -31,8 +31,7 @@
                     android:id="@id/_dp_exhlogo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dip"
-                    android:src="@drawable/s_516c43f5703df" />
+                    android:layout_marginLeft="3dip" />
 
                 <TextView
                     android:id="@id/_dp_exhname"
@@ -103,11 +102,11 @@
                     android:text="@string/exhtime" />
 
                 <TextView
+                    android:id="@id/_dp_exhdate"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:singleLine="true"
-                    android:id="@id/_dp_exhdate"/>
+                    android:singleLine="true" />
             </LinearLayout>
 
             <TextView
@@ -120,12 +119,12 @@
                 android:text="@string/exhintroductuin" />
 
             <TextView
+                android:id="@id/_dp_description"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dip"
                 android:layout_marginTop="6dip"
-                android:gravity="left"
-                android:id="@id/_dp_description" />
+                android:gravity="left" />
         </LinearLayout>
     </ScrollView>
 

@@ -17,4 +17,7 @@
 	<string name="exhtime">开放时间</string>
 	<string name="exhintroductuin">简介:</string>
 	<string name="pull_to_refresh_tap_label">Tap to refresh...</string>
+	<string name="contatcsdialog">请选择添加方式</string>
+	<string name="contactspick">从联系人中选择</string>
+	<string name="contactsadd">新建联系人</string>
 </resources>

@@ -20,13 +20,14 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import com.example.exguide.R;
 import com.scut.exguide.entity.Exhibition;
-import com.scut.exguide.entity.Task;
-import com.scut.exguide.mulithread.LoadImageThread;
+import com.scut.exguide.entity.TaskForLogo;
+
 import com.scut.exguide.mulithread.LoaderImageTask;
 
 import com.scut.exguide.ui.HomeActivity;
 import com.scut.exguide.utility.Constant;
 import com.scut.exguide.utility.MyActivity;
+import com.scut.exguide.utility.TaskHandler;
 
 import android.app.Activity;
 import android.util.Log;
@@ -75,7 +76,7 @@ public class ExhListAdapter extends BaseAdapter  {
 
 			holder = new ExViewHolder();
 
-			convertView = mInflater.inflate(R.layout.linearlayout_elistitem,
+			convertView = mInflater.inflate(R.layout.item_exhibition,
 					null);
 			holder.exhimage = (ImageView) convertView
 					.findViewById(R.id.exhimage);
@@ -97,13 +98,13 @@ public class ExhListAdapter extends BaseAdapter  {
 			
 		}
 
-		Task task = new Task();
+		TaskHandler task = new TaskForLogo();
 		String path = Constant.urlPrefix_getLogo+mData.get(position).logo_url;
-		task.path = path;
-		task.myActivity = (MyActivity) mActivity;
-		task.mImageView = holder.exhimage;
+		((TaskForLogo)task).path = path;
+		((TaskForLogo)task).myActivity = (MyActivity) mActivity;
+		((TaskForLogo)task).mImageView = holder.exhimage;
 		
-		HomeActivity.LoaderImage.addTask(task);
+		LoaderImageTask.addTask(task);
 		
 		
 //		LoadImageThread t = new LoadImageThread(holder.exhimage,

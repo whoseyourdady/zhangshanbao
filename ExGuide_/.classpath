@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="libs/Baidu-OAuth-SDK-Android-G-2.0.0.jar"/>
 	<classpathentry kind="lib" path="libs/Baidu-PCS-SDK-Android-L2-2.1.0.jar"/>
 	<classpathentry kind="lib" path="libs/httpmime-4.2.jar"/>
+	<classpathentry kind="lib" path="libs/weibosdk.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

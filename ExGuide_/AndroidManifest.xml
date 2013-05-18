@@ -5,8 +5,8 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="11"
-        android:targetSdkVersion="14" />
+        android:minSdkVersion="16"
+        android:targetSdkVersion="17" />
 
     <application
         android:allowBackup="true"
@@ -15,21 +15,37 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.scut.exguide.ui.ExhActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleTask" >
+            android:label="@string/app_name" >
         </activity>
         <activity
             android:name="com.scut.exguide.ui.HomeActivity"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:label="@string/app_name"
+            android:launchMode="singleTask" >
+            
         </activity>
         <activity
             android:name="com.scut.exguide.ui.OffLineUpload"
             android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.scut.exguide.ui.ContactActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>  
+                <action android:name="android.nfc.action.TECH_DISCOVERED" />  
+            </intent-filter>  
+        </activity>
+        <activity
+            android:name="com.scut.exguide.ui.ProductActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.nfc.action.TAG_DISCOVERED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
 
         <service
@@ -43,7 +59,6 @@
 			</intent-filter>
             -->
         </service>
-        <service android:name="com.scut.exguide.mulithread.MyService" />
 ，
     </application>
 
@@ -70,5 +85,11 @@
     </uses-permission>
     <uses-permission android:name="android.permission.WRITE_SETTINGS" >
     </uses-permission>
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="true" />
 
 </manifest>

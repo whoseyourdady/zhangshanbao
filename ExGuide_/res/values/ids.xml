@@ -1,19 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <!-- 下面是热门产品的id -->
-    <item type="id" name="hotproloading">false</item>
-    <item type="id" name="hotprolistview">false</item>
-    
-    <!-- 下面是首面的id -->
-    <item type="id" name="homeloading">false</item>
-    <item type="id" name="exhdate">false</item>
-    
+    <item name="hotproloading" type="id">false</item>
+    <item name="hotprolistview" type="id">false</item>
+    <item name="protextview" type="id">false</item>
+    <item name="proimageview" type="id">false</item>
+
+    <!-- 下面是展览会列表页的id -->
+    <item name="homeloading" type="id">false</item>
+    <item name="homelistview" type="id">false</item>
+    <item name="exhdate" type="id">false</item>
+
     <!-- 展会详情页的id -->
-    <item type="id" name="_dp_exhlogo">false</item>
-    <item type="id" name="_dp_exhname">false</item>
-    <item type="id" name="_dp_hallname">false</item>
-    <item type="id" name="_dp_exhsechedule">false</item>
-    <item type="id" name="_dp_exhdate">false</item>
-    <item type="id" name="_dp_description">false</item>
-    
+    <item name="_dp_exhlogo" type="id">false</item>
+    <item name="_dp_exhname" type="id">false</item>
+    <item name="_dp_hallname" type="id">false</item>
+    <item name="_dp_exhsechedule" type="id">false</item>
+    <item name="_dp_exhdate" type="id">false</item>
+    <item name="_dp_description" type="id">false</item>
+    <item name="_dp_loading" type="id">false</item>
+
+    <!-- 菜单 -->
+    <item name="locate" type="id">false</item>
+    <item name="attachweibo" type="id">false</item>
+    <item name="attachpcs" type="id">false</item>
+    <item name="exit" type="id">false</item>
+
+    <!-- 展品 -->
+    <item name="_product_tool" type="id">false</item>
+    <item name="product_pics_viewpager" type="id">false</item>
+    <item name="product_listview" type="id">false</item>
+    <item name="product_loading" type="id">false</item>
+    <item name="comment" type="id">false</item>
+    <item name="share" type="id">false</item>
+    <item name="more" type="id">false</item>
+    <item name="bottom_view_product" type="id">false</item>
+    <item name="top_view_product" type="id">false</item>
+    <item name="picsdotline" type="id">false</item>
+    <item name="_product_topview" type="id">false</item>
+    <item name="_product_middle_bar" type="id">false</item>
+    <item name="picsloding" type="id">false</item>
+    <item name="pics" type="id">false</item>
+
+    <!-- 联系人 -->
+     <item name="contactspick" type="id">false</item>
+    <item name="contactsadd" type="id">false</item>
+
 </resources>

@@ -2,19 +2,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/locate"
+        android:id="@id/locate"
         android:orderInCategory="1"
         android:showAsAction="ifRoom|withText"
         
         />
-    <item
-        android:id="@+id/setting"
+     <item
+        android:id="@id/attachpcs"
         android:orderInCategory="2"
         android:showAsAction="never"
-        android:title="@string/setting"/>
-    <item
-        android:id="@+id/exit"
+        android:title="@string/bundlingPcs"/>
+      <item
+        android:id="@id/attachweibo"
         android:orderInCategory="3"
+        android:showAsAction="never"
+        android:title="@string/bundlingWeibo"/>
+    <item
+        android:id="@id/exit"
+        android:orderInCategory="4"
         android:showAsAction="never"
         android:title="@string/exit"/>
 

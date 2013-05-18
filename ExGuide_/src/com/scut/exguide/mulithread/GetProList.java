@@ -1,15 +1,8 @@
-/*
- *获取瀑布流线程
- */
 package com.scut.exguide.mulithread;
 
 import java.io.BufferedReader;
-
 import java.io.InputStreamReader;
-
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -18,79 +11,64 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.scut.exguide.adapter.ExhListAdapter;
 import com.scut.exguide.entity.Exhibition;
-import com.scut.exguide.ui.ExhActivity;
+import com.scut.exguide.entity.Product;
+import com.scut.exguide.ui.ProuductListView;
+import com.scut.exguide.utility.Constant;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.os.Message;
 
-//第一个是参数，第二个是进度，第三个是结果
-public class AsyGetPics extends AsyncTask<String, Integer, ArrayList<String>> {
+/*
+ * 
+ * 获得热门产品列表
+ *
+ */
+public class GetProList extends AsyncTask<String, Integer, ArrayList<Product>> {
 
-	private Activity mActivity;
-
-	public AsyGetPics(Activity _a) {
-		mActivity = _a;
+	private ProuductListView mProuductListView;
+	
+	public GetProList(ProuductListView _ProuductListView) {
+		mProuductListView = _ProuductListView;
 	}
-
 	@Override
-	protected void onPreExecute() {
+	protected ArrayList<Product> doInBackground(String... params) {
 		// TODO Auto-generated method stub
-		super.onPreExecute();
-
-	}
-
-	/**
-	 * 在exhactivity中将参数写入excute函数中
-	 */
-	@Override
-	protected ArrayList<String> doInBackground(String... params) {
-		// TODO Auto-generated method stub
-
-		ArrayList<String> data = null;
 		try {
-
-			data = getPics(params[0]);
+			return getList(params[0]);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		return data;
+		return null;
 	}
-
+	
+	
+	
 	@Override
-	protected void onPostExecute(ArrayList<String> result) {
+	protected void onPostExecute(ArrayList<Product> result) {
 		// TODO Auto-generated method stub
-
-		((ExhActivity) mActivity).SetWaterfallUI(result);
-
 		super.onPostExecute(result);
+		mProuductListView.setAdapter(result);
+		
 	}
 
-	@Override
-	protected void onProgressUpdate(Integer... values) {
-		// TODO Auto-generated method stub
-		super.onProgressUpdate(values);
-	}
+
+
+
+
 
 	/**
-	 * 下载回瀑布流的地址
+	 * 下载回热门产品列表
 	 * 
 	 * @param romtepath
 	 * @return
 	 * @throws Exception
 	 */
-	public ArrayList<String> getPics(String remotepath) throws Exception {
-		ArrayList<String> data = new ArrayList<String>();
+	public ArrayList<Product> getList(String romtepath) throws Exception {
+		ArrayList<Product> data = new ArrayList<Product>();
 
-		HttpGet request = new HttpGet(remotepath);
+		HttpGet request = new HttpGet(romtepath);
 
 		/* StringBulder,jdk_1.5新增，用法基本跟StringBuffer一样，但效率要比StringBuffer高得多 */
 		StringBuilder sbuilder = new StringBuilder();
@@ -113,10 +91,19 @@ public class AsyGetPics extends AsyncTask<String, Integer, ArrayList<String>> {
 				JSONObject outerdata = new JSONObject(sbuilder.toString());
 				JSONArray innerdata = outerdata.getJSONArray("data");
 				for (int i = 0; i < innerdata.length(); i++) {
-
+					Product pro = new Product(false);
+					// 实际数据
 					JSONObject entity = innerdata.getJSONObject(i);
-					data.add(entity.getString("file_path"));
-
+					pro.Name = entity.getString("name_cn");	
+					
+					String st = entity.getString("pic_url");
+					String s = String.copyValueOf(
+							st.toCharArray(), 1,
+							st.length() - 1);
+					
+					pro.LogoUrl = Constant.urlPrefix_getLogo + s;
+					
+					data.add(pro);
 				}
 
 			}
@@ -126,4 +113,5 @@ public class AsyGetPics extends AsyncTask<String, Integer, ArrayList<String>> {
 		}
 		return data;
 	}
+
 }

@@ -47,6 +47,13 @@ public class ExPagerAdapter extends PagerAdapter {
 		// TODO Auto-generated method stub
 		return mTitle.get(position);
 	}
+
+	@Override
+	public void destroyItem(ViewGroup container, int position, Object object) {
+		// TODO Auto-generated method stub
+		container.removeView(mView.get(position));	
+		//super.destroyItem(container, position, object);
+	}
 	
 	
 

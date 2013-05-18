@@ -21,6 +21,7 @@ import org.json.JSONObject;
 import com.scut.exguide.adapter.ExhListAdapter;
 import com.scut.exguide.entity.Exhibition;
 import com.scut.exguide.ui.ExhActivity;
+import com.scut.exguide.ui.ExhibitionView;
 import com.scut.exguide.ui.HomeActivity;
 
 import android.app.Activity;
@@ -32,13 +33,13 @@ import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
 //第一个是参数，第二个是进度，第三个是结果
-public class AsyGetExhDescription extends
+public class GetExhDescription extends
 		AsyncTask<String, Integer, Exhibition> {
 
-	private Activity mActivity;
+	private ExhibitionView mExhibitionView;
 
-	public AsyGetExhDescription(Activity _a) {
-		mActivity = _a;
+	public GetExhDescription(ExhibitionView _ExhibitionView) {
+		mExhibitionView = _ExhibitionView;
 	}
 
 	@Override
@@ -73,7 +74,7 @@ public class AsyGetExhDescription extends
 	protected void onPostExecute(Exhibition result) {
 		// TODO Auto-generated method stub
 
-		((ExhActivity) mActivity).SetDescription(result);
+		mExhibitionView.SetUI(result);
 
 		super.onPostExecute(result);
 	}

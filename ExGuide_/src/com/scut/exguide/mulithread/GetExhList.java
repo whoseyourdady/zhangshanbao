@@ -22,6 +22,8 @@ import com.scut.exguide.adapter.ExhListAdapter;
 import com.scut.exguide.entity.Exhibition;
 import com.scut.exguide.ui.ExhActivity;
 import com.scut.exguide.ui.HomeActivity;
+import com.scut.exguide.ui.ExhListView;
+import com.scut.exguide.utility.Constant;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -33,24 +35,13 @@ import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
 //第一个是参数，第二个是进度，第三个是结果
-public class AsyGetExhList extends
+public class GetExhList extends
 		AsyncTask<String, Integer, ArrayList<Exhibition>> {
 
-	private View loading;
-	private ListView mList;
-	private Activity mActivity;
+	private ExhListView mExhListView;
 
-	public AsyGetExhList(View _l, ListView _li, Activity _a) {
-		loading = _l;
-		mList = _li;
-		mActivity = _a;
-
-	}
-
-	public AsyGetExhList(Activity _a) {
-
-		mActivity = _a;
-
+	public GetExhList(ExhListView _ExhListView) {
+		mExhListView = _ExhListView;
 	}
 
 	@Override
@@ -82,31 +73,8 @@ public class AsyGetExhList extends
 	@Override
 	protected void onPostExecute(ArrayList<Exhibition> result) {
 		// TODO Auto-generated method stub
-		// mList.setAdapter(new ExhListAdapter(mActivity, result));
-		//
-		// OnItemClickListener listener = new OnItemClickListener() {
-		//
-		//
-		// @Override
-		// public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-		// long arg3) {
-		// // TODO Auto-generated method stub
-		// Intent intent = new Intent();
-		// intent.setClass(mActivity, ExhActivity.class);
-		// intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-		// Bundle bundle = new Bundle();
-		// int id = ((HomeActivity) mActivity).GetExhibitonID(arg2);
-		// bundle.putInt("id", id);
-		// intent.putExtras(bundle);
-		// mActivity.startActivity(intent);
-		//
-		// }
-		// };
-		// mList.setOnItemClickListener(listener);
-		// loading.setVisibility(View.GONE);
-		// mList.setVisibility(View.VISIBLE);
 
-		((HomeActivity) mActivity).SetListUI(result);
+		mExhListView.setAdapter(result);
 		super.onPostExecute(result);
 	}
 
@@ -152,14 +120,15 @@ public class AsyGetExhList extends
 					Exhibition exh = new Exhibition();
 					// 实际数据
 					JSONObject entity = innerdata.getJSONObject(i);
-					
+
 					exh.mID = entity.getInt("id");
 					exh.name_cn = entity.getString("name_cn");
 					exh.name_en = entity.getString("name_en");
-					String url = String.copyValueOf(entity.getString("logo_url")
-							.toCharArray(), 1, entity.getString("logo_url")
-							.length() - 1);
-					exh.logo_url = url;
+					String url = String.copyValueOf(entity
+							.getString("logo_url").toCharArray(), 1, entity
+							.getString("logo_url").length() - 1);
+					String path = Constant.urlPrefix_getLogo + url;
+					exh.logo_url = path;
 
 					if (0 == entity.getInt("is_on_show")) {
 						exh.onshow = false;

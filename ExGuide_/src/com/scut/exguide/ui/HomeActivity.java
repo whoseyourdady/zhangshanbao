@@ -7,64 +7,49 @@
 
 package com.scut.exguide.ui;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.oauth.BaiduOAuth;
 import com.baidu.oauth.BaiduOAuth.BaiduOAuthResponse;
-
 import com.example.exguide.R;
-import com.scut.exguide.adapter.ExhListAdapter;
-import com.scut.exguide.entity.Exhibition;
-import com.scut.exguide.entity.Task;
-import com.scut.exguide.listener.MyLocationListener;
-import com.scut.exguide.mulithread.AsyGetExhList;
-import com.scut.exguide.mulithread.LoaderImageTask;
 
+import com.scut.exguide.listener.MyLocationListener;
+import com.scut.exguide.listener.WeiboOAuthListener;
+import com.scut.exguide.mulithread.GetExhList;
+import com.scut.exguide.mulithread.LoaderImageTask;
+import com.scut.exguide.utility.AccessTokenKeeper;
 import com.scut.exguide.utility.Constant;
+import com.scut.exguide.utility.DBUtility;
 import com.scut.exguide.utility.Location;
 import com.scut.exguide.utility.MyActivity;
+import com.scut.exguide.utility.TaskHandler;
+import com.scut.exguide.utility.ToastShow;
+import com.weibo.sdk.android.Oauth2AccessToken;
+import com.weibo.sdk.android.Weibo;
 
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
 import android.os.StrictMode;
 import android.app.ActionBar;
 import android.app.Activity;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.support.v4.app.NavUtils;
-import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Toast;
 
 public class HomeActivity extends Activity implements MyActivity {
 
 	// 菜单、VIEW等UI
 	private ActionBar mActionBar;// 主页的actionbar
-	private ListView mListView;
-	private View LocationRequesting;
 	private Menu mMenu;
+	private ExhListView mExhListView;
 
 	// 定位API
 	public LocationClient mLocationClient = null;
@@ -72,20 +57,32 @@ public class HomeActivity extends Activity implements MyActivity {
 	public static Location myLocation;// 全局标识的地理位置
 	public String myPoint = "当前位置为:";// 当前位置
 
-	public static LoaderImageTask LoaderImage = new LoaderImageTask();
+	public LoaderImageTask LoaderImage1 = new LoaderImageTask();
+	public LoaderImageTask LoaderImage2 = new LoaderImageTask();
 
 	// PCS API
 	BaiduOAuth oauthClient = null;
-	public static String mbOauth = null;//AcessToken
-	
+	public static String mbOauth = null;// AcessToken
+
+	public Weibo mWeibio;
+	public static Oauth2AccessToken mOauth2AccessToken;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_home);
-		// TEST test = new TEST();
-		// test.execute(0);
-		LoaderImage.start();
+		// setContentView(R.layout.activity_home);
+		ToastShow.setActivity(this);
+		
+		mExhListView = new ExhListView(this);
+
+		setContentView(mExhListView.getView());
+
+		SQLiteDatabase db  = openOrCreateDatabase(Constant.dbname, MODE_WORLD_WRITEABLE, null);
+		DBUtility.setDb(db);
+		DBUtility.CreateDB();
+		
+		LoaderImage1.start();
+		LoaderImage2.start();
 
 		if (Build.VERSION.SDK_INT >= 11) {
 			StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
@@ -98,23 +95,7 @@ public class HomeActivity extends Activity implements MyActivity {
 
 		initialLocService();
 
-		// LoaderImage = new LoaderImageTask();
-		// LoaderImage.start();
-
-		// setContentView(R.layout.exhdescription);
-		// mLoading = (View) findViewById(R.id.loading);
-		// mLoading.setVisibility(View.GONE);
 		intialActionbar();
-		//
-		mListView = (ListView) findViewById(R.id.exhilist);
-		mListView.setVisibility(View.GONE);
-
-		LocationRequesting = (View) findViewById(R.id.homeloading);
-		// LocationRequesting.setVisibility(View.GONE);
-		// intialExhiListView(mListView);
-		// setContentView(R.layout.waterfall);
-
-		
 
 	}
 
@@ -124,6 +105,8 @@ public class HomeActivity extends Activity implements MyActivity {
 	private void intialActionbar() {
 		mActionBar = getActionBar();
 		// mActionBar.setDisplayHomeAsUpEnabled(true);
+		// mActionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.title_bg_trans));
+
 		mActionBar.show();
 	}
 
@@ -154,30 +137,6 @@ public class HomeActivity extends Activity implements MyActivity {
 
 	}
 
-	// /**
-	// * 初始化listview
-	// */
-	// private void intialExhiListView(ListView _listview) {
-	// _listview.setAdapter(new ArrayAdapter<String>(this,
-	// android.R.layout.simple_expandable_list_item_1, getData()));
-	//
-	// // 设置事件监听器
-	// OnItemClickListener listener = new OnItemClickListener() {
-	//
-	// @Override
-	// public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-	// long arg3) {
-	// // TODO Auto-generated method stub
-	// Intent intent = new Intent();
-	// intent.setClass(getApplication(), ExhActivity.class);
-	// intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-	// startActivity(intent);
-	//
-	// }
-	// };
-	// _listview.setOnItemClickListener(listener);
-	// }
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -206,14 +165,20 @@ public class HomeActivity extends Activity implements MyActivity {
 		}
 			break;
 		case 2: {
-			//设置绑定
+			// 设置绑定PCS
 			GotoPcsOAuth();
 		}
 			break;
 		case 3: {
-			//finish();
-			Intent intent = new Intent(HomeActivity.this, OffLineUpload.class);
-			startActivity(intent);
+			// 设置绑定Weiob
+			mWeibio = Weibo.getInstance(Constant.APP_KEY,
+					Constant.REDIRECT_URL, Constant.SCOPE);
+			mWeibio.anthorize(HomeActivity.this, new WeiboOAuthListener(mOauth2AccessToken));
+			AccessTokenKeeper.keepAccessToken(getApplicationContext(), mOauth2AccessToken);
+		}
+			break;
+		case 4: {
+			finish();
 		}
 			break;
 		}
@@ -230,7 +195,7 @@ public class HomeActivity extends Activity implements MyActivity {
 				myLocation = (Location) msg.obj;
 				String l = myPoint + myLocation.City;
 				mMenu.getItem(0).setTitle(l);
-				AsyGetExhList asyGet = new AsyGetExhList(HomeActivity.this);
+				GetExhList asyGet = new GetExhList(mExhListView);
 				String city = String.copyValueOf(myLocation.City.toCharArray(),
 						0, myLocation.City.length() - 1);
 				String path = Constant.RequestExhlistUrl + "/city/" + city;
@@ -239,11 +204,12 @@ public class HomeActivity extends Activity implements MyActivity {
 			}
 				break;
 			case Constant.UpdateUI: {
-				Task task = (Task) msg.obj;
-				Bitmap bp = LoaderImageTask.PicsMap.get(task.path);
-				ImageView iv = (ImageView) LoaderImageTask.ViewsMap
-						.get(task.path);
-				iv.setImageBitmap(bp);
+				TaskHandler task = (TaskHandler) msg.obj;
+				Bitmap bp = LoaderImageTask.PicsMap.get(task.getPath());
+				// ImageView iv = (ImageView) LoaderImageTask.ViewsMap.get(task
+				// .getPath());
+				task.Update(bp);
+				// iv.setImageBitmap(bp);
 				Log.d("TEST", "设置");
 			}
 				break;
@@ -255,52 +221,9 @@ public class HomeActivity extends Activity implements MyActivity {
 
 	};
 
-	public int GetExhibitonID(int position) {
-		ExhListAdapter ad = (ExhListAdapter) mListView.getAdapter();
-		return ad.getId(position);
-	}
-
-	public void SetListUI(ArrayList<Exhibition> list) {
-
-		LocationRequesting.setVisibility(View.GONE);
-
-		mListView.setAdapter(new ExhListAdapter(this, list));
-
-		OnItemClickListener listener = new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent();
-				intent.setClass(HomeActivity.this, ExhActivity.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-				Bundle bundle = new Bundle();
-				int id = GetExhibitonID(arg2);
-				bundle.putInt("id", id);
-				intent.putExtras(bundle);
-				startActivity(intent);
-
-			}
-		};
-		mListView.setOnItemClickListener(listener);
-
-		mListView.setVisibility(View.VISIBLE);
-
-	}
-
 	public String getTag() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	public void Update(Object... param) {
-		// TODO Auto-generated method stub
-		Task task = (Task) param[0];
-		Message msg = new Message();
-		msg.what = 0;
-		msg.obj = task;
-		mhandler.sendMessage(msg);
 	}
 
 	public void GotoPcsOAuth() {
@@ -334,4 +257,32 @@ public class HomeActivity extends Activity implements MyActivity {
 		});
 	}
 
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		LoaderImageTask.Toggle();
+		mLocationClient.stop();
+		super.onDestroy();
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		switch (event.getKeyCode()) {
+		case KeyEvent.KEYCODE_BACK: {
+
+		}
+		}
+		return false;
+
+	}
+
+	@Override
+	public void Update(Object... param) {
+		// TODO Auto-generated method stub
+		Message msg = new Message();
+		msg.what = Constant.UpdateUI;
+		msg.obj = param[0];
+		mhandler.sendMessage(msg);
+	}
 }

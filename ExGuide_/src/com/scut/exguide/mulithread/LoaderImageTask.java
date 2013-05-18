@@ -17,15 +17,14 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-
-import com.scut.exguide.entity.Task;
+import com.scut.exguide.entity.TaskForLogo;
+import com.scut.exguide.utility.TaskHandler;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import android.util.Log;
 import android.view.View;
-
 
 /**
  * 异步任务获取assets目录下images下的图片资源
@@ -37,20 +36,21 @@ public class LoaderImageTask {
 
 	// 全局缓存
 	public static Map<String, Bitmap> PicsMap = new HashMap<String, Bitmap>();
-	public static ArrayList<Task> mTask = new ArrayList<Task>();
-	public static Map<String, View> ViewsMap = new HashMap<String, View>();
+	public static ArrayList<TaskHandler> mTask = new ArrayList<TaskHandler>();
+	// public static Map<String, View> ViewsMap = new HashMap<String, View>();
 
-	public boolean Toggle = true;
+	public static boolean Toggle = true;// while循环控制
+	public static boolean Lock = false;// 线程控制锁
 
 	public LoadImageThread mThread;
 
-	public static void addTask(Task _task) {
+	public static void addTask(TaskHandler _task) {
 		mTask.add(_task);
-		if (null != _task.mImageView) {
-			ViewsMap.put(_task.path, _task.mImageView);// 把View加入映射
-		} else {
-			ViewsMap.put(_task.path, _task.mView);
-		}
+		// if (1 == _task.getTag()) {
+		// ViewsMap.put(_task.getPath(), _task.getView());// 把View加入映射
+		// } else {
+		// ViewsMap.put(_task.getPath(), _task.getView());
+		// }
 
 	}
 
@@ -66,10 +66,18 @@ public class LoaderImageTask {
 
 	}
 
-	public void CleanThread() {
-		PicsMap.clear();
+	public static void Toggle() {
 		Toggle = false;
-		mThread.destroy();
+	}
+
+	public void CleanThread() {
+
+		// mThread.destroy();
+		PicsMap.clear();
+		mTask.clear();
+		Toggle = false;
+		// ViewsMap.clear();
+		// mThread.destroy();
 		mTask = null;
 	}
 
@@ -80,66 +88,65 @@ public class LoaderImageTask {
 			// TODO Auto-generated method stub
 			super.run();
 			while (Toggle) {
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
+				TaskHandler _task = null;
 				if (!mTask.isEmpty()) {
 
+					if (!Lock) {
+						Lock = true;
+						_task = mTask.get(0);
+						mTask.remove(_task);
+						Lock = false;
+					} else {
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						continue;
+					}
+				} else {
 					try {
-						Task _task = mTask.get(0);
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					continue;
+				}
 
-						String path = _task.path;
+				try {
+					if (3 == _task.getTag()) {
+						for (int i = 0; i < _task.getSize(); i++) {
+							String path = _task.getPath(i);
+							Bitmap bitmap = getImage(path);
+							if (null != bitmap) {
+
+								PicsMap.put(path, bitmap);
+								// _task.mImageView.setImageBitmap(bitmap);
+
+							}
+						}
+						_task.getActivity().Update(_task);
+					} else {
+						String path = _task.getPath();
 						Bitmap bitmap = getImage(path);
 						if (null != bitmap) {
 
 							PicsMap.put(path, bitmap);
-							_task.myActivity.Update(_task);
+							// _task.mImageView.setImageBitmap(bitmap);
+							_task.getActivity().Update(_task);
 						}
-
-						mTask.remove(_task);
-
-					} catch (IllegalStateException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
 					}
-				}
 
+				} catch (IllegalStateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-			// try {
-			//
-			// if (0 == FLAG) {
-			// Bitmap bitmap = getImage(url);
-			// mImageView.setImageBitmap(bitmap);
-			// } else if (1 == FLAG) {
-			//
-			// Bitmap bitmap = getImage(url);
-			//
-			// if (bitmap != null) {
-			// int width = bitmap.getWidth();// 获取真实宽高
-			// int height = bitmap.getHeight();
-			// LayoutParams lp = mView.getLayoutParams();
-			// lp.height = (height * itemWidth) / width;// 调整高度
-			// mView.setLayoutParams(lp);
-			// ImageView imageview = (ImageView) mView
-			// .findViewById(R.id.waterfall_image);
-			// View _view = (View) mView
-			// .findViewById(R.id.waterloading);
-			// _view.setVisibility(View.GONE);
-			// imageview.setImageBitmap(bitmap);
-			// }
-			// }
-			//
-			// } catch (Exception e) {
-			// // TODO Auto-generated catch block
-			// e.printStackTrace();
-			// }
 
 		}
 
@@ -194,7 +201,8 @@ public class LoaderImageTask {
 
 	}
 
-	private byte[] readStream(InputStream inStream) throws IOException {
+	private byte[] readStreamreadStream(InputStream inStream)
+			throws IOException {
 		// TODO Auto-generated method stub
 		ByteArrayOutputStream outstream = new ByteArrayOutputStream();
 		byte[] buffer = new byte[1024]; // 用数据装
